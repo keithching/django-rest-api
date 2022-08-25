@@ -1,4 +1,5 @@
-from rest_framework import generics
+from multiprocessing import Event
+from rest_framework import generics, mixins
 
 from .models import EventProvider
 from .serializers import EventProviderSerializer
@@ -52,3 +53,24 @@ eventprovider_destroy_view = EventProviderDestroyAPIView.as_view()
 #     serializer_class = EventProviderSerializer
 
 # eventprovider_create_view = EventProviderCreateAPIView.as_view()
+
+# class EventProviderMixinView(
+#     mixins.CreateModelMixin,
+#     mixins.ListModelMixin,
+#     mixins.RetrieveModelMixin,
+#     generics.GenericAPIView
+#     ):
+#     queryset = EventProvider.objects.all()
+#     serializer_class = EventProviderSerializer
+#     lookup_field = 'pk'
+
+#     def get(self, request, *args, **kwargs): # HTTP -> get
+#         pk = kwargs.get("pk")
+#         if pk is not None:
+#             return self.retrieve(request, *args, **kwargs)
+#         return self.list(request, *args, **kwargs) # this list method comes from mixins.ListModelMixin
+    
+#     def post(self, request, *args, **kwargs):
+#         return self.create(request, *args, **kwargs)
+
+# eventprovider_mixin_view = EventProviderMixinView.as_view()

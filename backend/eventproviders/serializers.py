@@ -5,6 +5,7 @@ class EventProviderSerializer(serializers.ModelSerializer):
     class Meta:
         model = EventProvider
         fields = [
+            'id',
             'name',
             'email',
             'date_reg'
