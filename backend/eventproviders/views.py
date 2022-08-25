@@ -1,13 +1,16 @@
 from multiprocessing import Event
-from rest_framework import generics, mixins
+from rest_framework import generics, mixins, authentication, permissions
 
 from .models import EventProvider
+from .permissions import IsStaffEditorPermission
 from .serializers import EventProviderSerializer
 
 # this API view can perform both listing and creating, depending on the HTTP request method 
 class EventProviderListCreateAPIView(generics.ListCreateAPIView):
     queryset = EventProvider.objects.all()
     serializer_class = EventProviderSerializer
+    authentication_classes = [authentication.SessionAuthentication]
+    permission_classes = [permissions.IsAdminUser, IsStaffEditorPermission] # permission and authentication for this API view
 
     # def perform_create(self, serializer):
 
