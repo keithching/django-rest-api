@@ -1,42 +1,58 @@
-from multiprocessing import Event
-from rest_framework import generics, mixins, authentication, permissions
-
+from rest_framework import generics, mixins #, authentication, permissions
 from .models import EventProvider
-from .permissions import IsStaffEditorPermission
+from spark.mixins import StaffEditorPermissionMixin
 from .serializers import EventProviderSerializer
 
+# no longer needed
+# from .permissions import IsStaffEditorPermission
+# from spark.authentication import TokenAuthentication
+
 # this API view can perform both listing and creating, depending on the HTTP request method 
-class EventProviderListCreateAPIView(generics.ListCreateAPIView):
+class EventProviderListCreateAPIView(
+    StaffEditorPermissionMixin,
+    generics.ListCreateAPIView):
     queryset = EventProvider.objects.all()
     serializer_class = EventProviderSerializer
-    authentication_classes = [authentication.SessionAuthentication]
-    permission_classes = [permissions.IsAdminUser, IsStaffEditorPermission] # permission and authentication for this API view
+    # authentication_classes = [
+    #     authentication.SessionAuthentication,
+    #     TokenAuthentication # use token authentication to work with this APIView
+    # ]
+    # permission_classes = [permissions.IsAdminUser, IsStaffEditorPermission] # permission and authentication for this API view
 
     # def perform_create(self, serializer):
 
 eventprovider_list_create_view = EventProviderListCreateAPIView.as_view()
 
 # django rest framework generic views
-class EventProviderDetailAPIView(generics.RetrieveAPIView): 
+class EventProviderDetailAPIView(
+    StaffEditorPermissionMixin,
+    generics.RetrieveAPIView): 
     queryset = EventProvider.objects.all()
     serializer_class = EventProviderSerializer
+    # permission_classes = [permissions.IsAdminUser, IsStaffEditorPermission] # permission and authentication for this API view
     # lookup_field = 'pk'
 
 eventprovider_detail_view = EventProviderDetailAPIView.as_view()
 
-class EventProviderUpdateAPIView(generics.UpdateAPIView): 
+class EventProviderUpdateAPIView(
+    StaffEditorPermissionMixin,
+    generics.UpdateAPIView): 
     queryset = EventProvider.objects.all()
     serializer_class = EventProviderSerializer
     lookup_field = 'pk'
+    # permission_classes = [permissions.IsAdminUser, IsStaffEditorPermission] # permission and authentication for this API view
 
     # def perform_update(self, serializer):
 
 eventprovider_update_view = EventProviderUpdateAPIView.as_view()
 
-class EventProviderDestroyAPIView(generics.DestroyAPIView): 
+class EventProviderDestroyAPIView(
+    StaffEditorPermissionMixin,
+    generics.DestroyAPIView): 
     queryset = EventProvider.objects.all()
     serializer_class = EventProviderSerializer
     lookup_field = 'pk'
+    # permission_classes = [permissions.IsAdminUser, IsStaffEditorPermission] # permission and authentication for this API view
 
     # def perform_destroy(self, serializer):
 
