@@ -40,5 +40,6 @@ urlpatterns = [
     path('api/', include("spark.urls")),
     path('api/event_providers/', include("eventproviders.urls")),
     path('api/event_categories/', include("eventcategories.urls")),
-    path('api/events/', include("events.urls"))
+    path('api/events/', include("events.urls")),
+    path('api/v2/', include('home.routers'))
 ]
