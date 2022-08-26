@@ -20,6 +20,9 @@ class EventProviderListCreateAPIView(
     # permission_classes = [permissions.IsAdminUser, IsStaffEditorPermission] # permission and authentication for this API view
 
     # def perform_create(self, serializer):
+        # email = serializer.validated_data.pop('email')
+        # print(email)
+        # serializer.save()
 
 eventprovider_list_create_view = EventProviderListCreateAPIView.as_view()
 
