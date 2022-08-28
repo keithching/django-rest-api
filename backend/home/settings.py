@@ -9,7 +9,7 @@ https://docs.djangoproject.com/en/4.1/topics/settings/
 For the full list of settings and their values, see
 https://docs.djangoproject.com/en/4.1/ref/settings/
 """
-
+import datetime
 from pathlib import Path
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
@@ -37,6 +37,8 @@ INSTALLED_APPS = [
     'eventproviders',
     'eventcategories',
     'events',
+    'rest_framework_simplejwt', # JSON Web Token
+    'corsheaders', # CORS headers
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -48,6 +50,7 @@ INSTALLED_APPS = [
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
+    'corsheaders.middleware.CorsMiddleware', # CORS middlewire
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
@@ -56,6 +59,16 @@ MIDDLEWARE = [
 ]
 
 ROOT_URLCONF = 'home.urls'
+CORS_URLS_REGEX = r"^/api/.*"
+CORS_ALLOWED_ORIGINS = [ 
+    # allowed hosts for CORS to interact with the backend
+    # put web-based clients here
+]
+if DEBUG:
+    CORS_ALLOWED_ORIGINS += [
+        'http://localhost:8111',
+        'https://localhost:8111'
+    ]
 
 TEMPLATES = [
     {
@@ -140,8 +153,10 @@ REST_FRAMEWORK = {
     'DEFAULT_AUTHENTICATION_CLASSES': [
         # default for all the API views
         # package -> module -> authentication we want to use
+        # the ordering of the following auths does matter
         "rest_framework.authentication.SessionAuthentication",
-        "spark.authentication.TokenAuthentication"
+        "spark.authentication.TokenAuthentication",
+        "rest_framework_simplejwt.authentication.JWTAuthentication", # JWT Auth
     ],
     'DEFAULT_PERMISSION_CLASSES': [
         'rest_framework.permissions.IsAuthenticatedOrReadOnly' # GET
@@ -150,4 +165,10 @@ REST_FRAMEWORK = {
     # pagination
     'DEFAULT_PAGINATION_CLASS': 'rest_framework.pagination.LimitOffsetPagination',
     'PAGE_SIZE': 5
+}
+
+SIMPLE_JWT = {
+    "AUTH_HEADER_TYPES": ['Bearer'],
+    "ACCESS_TOKEN_LIFETIME": datetime.timedelta(seconds=10), # or hours=1 something like that
+    "REFRESH_TOKEN_LIFETIME": datetime.timedelta(minutes=30) # or day=1 something like that
 }

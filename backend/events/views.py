@@ -6,8 +6,6 @@ from spark.mixins import StaffEditorPermissionMixin
 class EventListCreateAPIView(StaffEditorPermissionMixin, generics.ListCreateAPIView):
     queryset = Event.objects.all()
     serializer_class = EventSerializer
-    # authentication_classes = [authentication.SessionAuthentication]
-    # permission_classes = [permissions.IsAdminUser, IsStaffEditorPermission]
 
 event_list_create_view = EventListCreateAPIView.as_view()
 
