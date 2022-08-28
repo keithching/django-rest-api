@@ -1,0 +1,10 @@
+django>=4.0.0,<4.1.0
+djangorestframework
+djangorestframework-simplejwt
+pyyaml
+markdown
+requests
+django-cors-headers
+django-filter
+pygments
+psycopg2-binary
